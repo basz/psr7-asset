@@ -75,7 +75,7 @@ $this->url('hkt/psr7-asset:route', [
     'package' => '',
     'file' => '/web/css/bootstrap.min.css'
 ]);
-``
+```
 
 ## Mapping
 
