@@ -1,28 +1,31 @@
-# Aura.Asset_Bundle
+# Psr7Asset
 
-Asset management for PHP.
+Asset management for PHP. This package is a fork of [Aura.Asset_Bundle](https://github.com/friendsofaura/Aura.Asset_Bundle)
+
+## Todo
+
+* Fix the broken test
+* Add symbolic link ?
+* If symbolic linked, way to remove them via cli
 
 ## Foreword
 
 ### Requirements
 
-This package requires PHP 5.3 or later. Unlike Aura library packages, this
-asset package has userland dependencies:
+This package has some userland dependencies:
 
-- [aura/web](https://packagist.org/packages/aura/web)
+- [psr/http-message-implementation](https://packagist.org/providers/psr/http-message-implementation)
+- [psr/http-factory](https://github.com/php-fig/fig-standards/blob/master/proposed/http-factory/http-factory.md) (WIP)
 
 ### Installation
 
-This asset-bundle is installable and autoloadable via Composer with the following
-`require` element in your `composer.json` file:
-
-    "require": {
-        "aura/asset-bundle": "2.*"
-    }
+```
+composer require hkt/psr7-asset
+```
 
 ### Tests
 
-[![Build Status](https://travis-ci.org/harikt/Aura.Asset_Bundle.png?branch=master)](https://travis-ci.org/harikt/Aura.Asset_Bundle)
+[![Build Status](https://travis-ci.org/harikt/Psr7Asset.png?branch=master)](https://travis-ci.org/harikt/Psr7Asset)
 
 ```bash
 composer install
@@ -31,20 +34,18 @@ phpunit -c tests/unit
 
 ### PSR Compliance
 
-This kernel attempts to comply with [PSR-1][], [PSR-2][], and [PSR-4][]. If
+This attempts to comply with [PSR-1][], [PSR-2][], [PSR-4][] and [PSR-7][]. If
 you notice compliance oversights, please send a patch via pull request.
 
 [PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 
-### Community
-
-To ask questions, provide feedback, or otherwise communicate with the Aura community, please join our [Google Group](http://groups.google.com/group/auraphp), follow [@auraphp on Twitter](http://twitter.com/auraphp), or chat with us on #auraphp on Freenode.
+[PSR-7]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message.md
 
 ## Structure of Package
 
-Assume you have a `Vendor.Package`. All your assets should be in the
+Assume you have a `Vendor.Package`. Your assets can be any where. Consider it is in the
 `web` folder. The folder names `css`, `images`, `js` can be according to your preffered name.
 
 
@@ -66,70 +67,70 @@ Assume you have a `Vendor.Package`. All your assets should be in the
 Assuming you have the same structure, now in your template you can point
 to `/asset/vendor/package/css/some.css`, `/asset/vendor/package/js/hello.js`, `/asset/vendor/package/images/another.jpg`.
 
-Onething you still need to make sure in the name `asset/vendor/package`
-
-> `vendor/package` which is the composer package name.
-
-## Usage in any project
-
-Add path to the router, according to the router you are using so that vendor, package and file name can be extracted from it.
-
-
-An example of usage with Aura.Router and Aura.Dispatcher is given below. The dispacther is used for it need to recursively call the `__invoke` method. Else action will return responder, then you need to invoke responder to get the response and finally do send the response.
+If you are using `zend expressive` it is as below,
 
 ```php
-<?php
-$map = array(
-    'my/package' => '/path/to/web/where/css/js/etc/',
-    'my/package2' => '/path/to/web/where/css/js/etc/of/packag2'
-);
-$types = array();
-$router->add('aura.asset', '/asset/{vendor}/{package}/{file}')
-    ->setValues([
-        'action' => 'aura.asset',
-    ])
-    ->addTokens(array(
-        'file' => '(.*)'
-    ));
+$this->url('hkt/psr7-asset:route', [
+    'vendor' => '',
+    'package' => '',
+    'file' => '/web/css/bootstrap.min.css'
+]);
+``
 
-$dispatcher->setObject(
-    'aura.asset',
-    function () use ($map, $types) {
-        $action = new \Aura\Asset_Bundle\AssetAction(
-            new \Aura\Asset_Bundle\AssetService($map, $types),
-            new \Aura\Asset_Bundle\AssetResponder()
-        );
-        return $action;
+## Mapping
+
+With the help of mapping the `vendor/package` or directly the path you can alter the result it returns.
+
+Eg configuration in Aura.Di.
+
+```php
+$di->params['Hkt\Psr7Asset\AssetService']['map'] = [
+    // 'vendor/package/css/hello.css' => dirname(dirname(__DIR__)) . '/asset/css/test.css',
+    'vendor/package' => dirname(dirname(__DIR__)) . '/asset',
+];
+
+$di->params['Hkt\Psr7Asset\AssetResponder']['streamFactory'] = $di->lazyNew('Http\Factory\Diactoros\StreamFactory');
+```
+
+## Current Dependency
+
+For the current time you need to modify `composer.json` to something like.. Probably more configuration which is missed to document. Eventually there will be less configuration.
+
+```json
+{
+    // ..
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/shadowhand/http-factory.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "zendframework/http-factory-diactoros",
+                "version": "1.0",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/shadowhand/http-factory-diactoros.git",
+                    "reference": "master"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Http\\Factory\\Diactoros\\": "src/"
+                    }
+                }
+            }
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/harikt/psr7-asset.git"
+        },
+    ],
+    "require": {
+        //....
+        "hkt/psr7-asset": "1.*@dev",
+        "psr/http-factory": "1.*@dev",        
+        "zendframework/http-factory-diactoros": "1.*"
     }
-);
-```
-
-In your layout or view
-
-```php
-<link href="/asset/<vendor>/<package>/css/bootstrap.min.css" rel="stylesheet">
-```
-
-## Usage in Aura.Web_Kernel
-
-```php
-<?php
-    // more code
-    public function define(Container $di)
-    {
-        $di->params['Aura\Asset_Bundle\AssetService']['map']['cocoframework/example'] = dirname(__DIR__) . '/web';
-    }
-```
-
-Make sure you have router helper defined for Aura.View.
-
-```php
-<link rel="stylesheet" href="<?php echo $this->router()
-      ->generateRaw('aura.asset',
-          array(
-              'vendor' => 'cocoframework',
-              'package' => 'example',
-              'file' => '/css/syntax.css'
-          )
-      ); ?>">
+}
 ```

@@ -1,7 +1,10 @@
 <?php
-namespace Aura\Asset_Bundle;
+namespace Hkt\Psr7Asset;
 
-use Aura\Web\WebFactory;
+use Hkt\Psr7Asset\AssetResponder;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\ServerRequestFactory;
+use Zend\Expressive\Router\RouteResult;
 
 class AssetActionTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,25 +20,36 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
             'vendor/package' => $this->asset_dir,
         ));
 
-        $web_factory = new WebFactory($GLOBALS);
-        $responder = new AssetResponder($web_factory->newResponse());
+        $responder = new AssetResponder();
 
         $this->action = new AssetAction($service, $responder);
     }
 
     public function test__invoke()
     {
-        $responder = $this->action->__invoke('vendor', 'package', 'style.css');
-
-        $this->assertInstanceOf('Aura\Asset_Bundle\AssetResponder', $responder);
-
-        $actual = $responder->getData();
-        $expect = (object) array(
-            'asset' => (object) array(
-                'path' => $this->asset_dir . DIRECTORY_SEPARATOR . 'style.css',
-                'type' => 'text/css',
-            )
+        $request = ServerRequestFactory::fromGlobals(
+            [
+                'path' => '/asset/vendor/package/style.css'
+            ],
+            [],
+            [],
+            [],
+            []
         );
-        $this->assertEquals($expect, $actual);
+        // $request = $request->withPath();
+        $response = new Response();
+        $request->withAttribute(RouteResult::class);
+        $responder = $this->action->__invoke($request, $response);
+
+        $this->assertInstanceOf(Response::class, $responder);
+
+        // $actual = $responder->getData();
+        // $expect = (object) array(
+        //     'asset' => (object) array(
+        //         'path' => $this->asset_dir . DIRECTORY_SEPARATOR . 'style.css',
+        //         'type' => 'text/css',
+        //     )
+        // );
+        // $this->assertEquals($expect, $actual);
     }
 }

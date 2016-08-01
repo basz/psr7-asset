@@ -1,5 +1,8 @@
 <?php
-namespace Aura\Asset_Bundle;
+namespace Hkt\Psr7Asset;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  *
@@ -47,19 +50,26 @@ class AssetAction
      *
      * Invokes the Domain and Responder to return a Response.
      *
-     * @param string $vendor The vendor name.
+     * @param ServerRequestInterface $request
      *
-     * @param string $package The package name.
+     * @param ResponseInterface $response
      *
-     * @param string $file The asset file within within the vendor package.
+     * @param callable $next
      *
-     * @return Response $response A web response object.
+     * @return Response $response
      *
      */
-    public function __invoke($vendor, $package, $file)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
+        $docroot = $request->getServerParams()['DOCUMENT_ROOT'];
+        $routeResult = $request->getAttribute('Zend\Expressive\Router\RouteResult');
+        $params = $routeResult->getMatchedParams();
+        $vendor = $params['vendor'];
+        $package = $params['package'];
+        $file = $params['file'];
+        // public function __invoke($vendor, $package, $file)
         $asset = $this->domain->getAsset($vendor, $package, $file);
         $this->responder->setData(array('asset' => $asset));
-        return $this->responder;
+        return $this->responder->__invoke($response, $docroot);
     }
 }

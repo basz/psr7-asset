@@ -1,5 +1,5 @@
 <?php
-namespace Aura\Asset_Bundle;
+namespace Hkt\Psr7Asset;
 
 class AssetServiceTest extends \PHPUnit_Framework_TestCase
 {

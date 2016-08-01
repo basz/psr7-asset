@@ -1,8 +1,9 @@
 <?php
-namespace Aura\Asset_Bundle;
+namespace Hkt\Psr7Asset;
 
-use Aura\Web\Response;
-use SplFileObject;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Factory\StreamFactoryInterface;
 
 /**
  *
@@ -31,15 +32,20 @@ class AssetResponder
 
     /**
      *
-     * Constructor.
-     *
-     * @param Response $response A web response object.
+     * @var StreamFactoryInterface
      *
      */
-    public function __construct(Response $response)
+    protected $streamFactory;
+
+    /**
+     *
+     * Constructor.
+     *
+     */
+    public function __construct(StreamFactoryInterface $streamFactory)
     {
-        $this->response = $response;
         $this->data = (object) array();
+        $this->streamFactory = $streamFactory;
     }
 
     /**
@@ -73,16 +79,20 @@ class AssetResponder
      *
      * Modifies and returns the response.
      *
-     * @param string $path The filesystem path to the asset.
+     * @param ResponseInterface $response
      *
-     * @param string $type The asset media type.
-     *
-     * @return Response
+     * @return Response $response
      *
      */
-    public function __invoke()
+    public function __invoke(ResponseInterface $response, $docroot)
     {
-        if (isset($this->data->asset->path)) {
+        $this->response = $response;
+
+        if (
+            isset($this->data->asset->path) &&
+            is_file($this->data->asset->path) &&
+            is_readable($this->data->asset->path)
+        ) {
             $this->ok(
                 $this->data->asset->path,
                 $this->data->asset->type
@@ -106,14 +116,11 @@ class AssetResponder
      */
     protected function ok($path, $type)
     {
-        $this->response->status->set(200);
-        $this->response->content->set(function () use ($path) {
-            $file = new SplFileObject($path);
-            while (! $file->eof()) {
-                echo $file->fgets();
-            }
-        });
-        $this->response->content->setType($type);
+        $this->response =  $this->response
+            ->withStatus(200)
+            ->withBody($this->streamFactory->createStreamFromResource($path))
+            ->withHeader('Content-Length', (string) filesize($path))
+            ->withHeader('Content-Type', $type);
     }
 
     /**
@@ -129,6 +136,7 @@ class AssetResponder
      */
     protected function notFound()
     {
-        $this->response->status->set(404);
+        $this->response = $this->response->withStatus(404)
+            ->getBody()->write("Not found");
     }
 }

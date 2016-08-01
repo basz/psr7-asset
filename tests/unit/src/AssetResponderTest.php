@@ -1,7 +1,7 @@
 <?php
-namespace Aura\Asset_Bundle;
+namespace Hkt\Psr7Asset;
 
-use Aura\Web\WebFactory;
+use Psr\Http\Message\ResponseInterface;
 
 class AssetResponderTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,8 +13,7 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
     {
         $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'web';
 
-        $web_factory = new WebFactory($GLOBALS);
-        $this->responder = new AssetResponder($web_factory->newResponse());
+        $this->responder = new AssetResponder();
     }
 
     public function test__invoke_Ok()
@@ -31,9 +30,9 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
             'asset' => $asset,
         ));
 
-        $response = $this->responder->__invoke();
+        $response = $this->responder->__invoke($response);
 
-        $this->assertInstanceOf('Aura\Web\Response', $response);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
 
         $actual = $response->status->getCode();
         $this->assertSame(200, $actual);
@@ -56,7 +55,7 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
         $type = null;
         $response = $this->responder->__invoke($path, $type);
 
-        $this->assertInstanceOf('Aura\Web\Response', $response);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
 
         $actual = $response->status->getCode();
         $this->assertSame(404, $actual);

@@ -1,5 +1,5 @@
 <?php
-namespace Aura\Asset_Bundle;
+namespace Hkt\Psr7Asset;
 
 /**
  *
@@ -90,6 +90,12 @@ class AssetService
      */
     protected function getPath($vendor, $package, $file)
     {
+        // check if path mapped to some other file
+        // vendor/package/css/style.css => public/css/style.css
+        $path = "{$vendor}/{$package}/{$file}";
+        if (isset($this->map[$path])) {
+            return realpath($this->map[$path]);
+        }
         $key = "{$vendor}/{$package}";
         if (isset($this->map[$key])) {
             $dir = rtrim($this->map[$key], DIRECTORY_SEPARATOR);
