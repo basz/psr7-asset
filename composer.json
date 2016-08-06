@@ -17,11 +17,6 @@
         "psr/http-message":"^1.0",
         "zendframework/zend-diactoros":"^1.0"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        }
-    },
     "autoload": {
         "psr-4": {
             "Hkt\\Psr7Asset\\":"src/",
