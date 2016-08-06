@@ -1,21 +1,8 @@
 # Psr7Asset
 
-Asset management for PHP. This package is a fork of [Aura.Asset_Bundle](https://github.com/friendsofaura/Aura.Asset_Bundle)
-
-## Todo
-
-* Fix the broken test
-* Add symbolic link ?
-* If symbolic linked, way to remove them via cli
+Asset management for PHP. This package is a fork of [Aura.Asset_Bundle](https://github.com/friendsofaura/Aura.Asset_Bundle).
 
 ## Foreword
-
-### Requirements
-
-This package has some userland dependencies:
-
-- [psr/http-message-implementation](https://packagist.org/providers/psr/http-message-implementation)
-- [psr/http-factory](https://github.com/php-fig/fig-standards/blob/master/proposed/http-factory/http-factory.md) (WIP)
 
 ### Installation
 
@@ -25,7 +12,7 @@ composer require hkt/psr7-asset
 
 ### Tests
 
-[![Build Status](https://travis-ci.org/harikt/Psr7Asset.png?branch=master)](https://travis-ci.org/harikt/Psr7Asset)
+[![Build Status](https://travis-ci.org/harikt/psr7-asset.png?branch=master)](https://travis-ci.org/harikt/psr7-asset)
 
 ```bash
 composer install
@@ -67,70 +54,50 @@ Assume you have a `Vendor.Package`. Your assets can be any where. Consider it is
 Assuming you have the same structure, now in your template you can point
 to `/asset/vendor/package/css/some.css`, `/asset/vendor/package/js/hello.js`, `/asset/vendor/package/images/another.jpg`.
 
-If you are using `zend expressive` it is as below,
+## Routing
+
+The library can be used with any framework. So it makes use of preg_match under the hood. The default regx is `/\/asset\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)\/(.*)/` . If you configure your route to respond to something else, please do change the regx via `setRouteRegx` method.
+
+If you are using `zend expressive fast route` you can configure as,
+
+```php
+$router->addRoute(new \Zend\Expressive\Router\Route('/asset/{vendor}/{package}/{file:.*}', 'Hkt\Psr7Asset\AssetAction', ['GET'], 'hkt/psr7-asset:route'));
+```
+
+> NB : Make sure you have set `Hkt\Psr7Asset\AssetAction` to the Di container.
+
+From your view you can use as
 
 ```php
 $this->url('hkt/psr7-asset:route', [
-    'vendor' => '',
-    'package' => '',
-    'file' => '/web/css/bootstrap.min.css'
+    'vendor' => 'vendor',
+    'package' => 'package',
+    'file' => '/css/bootstrap.min.css'
 ]);
 ```
+
+This will return `/asset/vendor/package/css/bootstrap.min.css`.
 
 ## Mapping
 
 With the help of mapping the `vendor/package` or directly the path you can alter the result it returns.
 
-Eg configuration in Aura.Di.
+## Overriding css, js, images
+
+Like [puli](https://github.com/puli) it is possible that you can override the style sheet, images, js etc for the downloaded package. You just need to map it. No magic under the hood.
+
+## Configuration via Aura.Di
 
 ```php
 $di->params['Hkt\Psr7Asset\AssetService']['map'] = [
-    // 'vendor/package/css/hello.css' => dirname(dirname(__DIR__)) . '/asset/css/test.css',
+    'vendor/package/css/hello.css' =>  dirname(dirname(__DIR__)) . '/asset/css/test.css',
     'vendor/package' => dirname(dirname(__DIR__)) . '/asset',
 ];
 
-$di->params['Hkt\Psr7Asset\AssetResponder']['streamFactory'] = $di->lazyNew('Http\Factory\Diactoros\StreamFactory');
-```
+$di->params['Hkt\Psr7Asset\AssetAction'] = array(
+    'domain' => $di->lazyNew('Hkt\Psr7Asset\AssetService'),
+    'responder' => $di->lazyNew('Hkt\Psr7Asset\AssetResponder'),
+);
 
-## Current Dependency
-
-For the current time you need to modify `composer.json` to something like.. Probably more configuration which is missed to document. Eventually there will be less configuration.
-
-```json
-{
-    // ..
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/shadowhand/http-factory.git"
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "zendframework/http-factory-diactoros",
-                "version": "1.0",
-                "source": {
-                    "type": "git",
-                    "url": "https://github.com/shadowhand/http-factory-diactoros.git",
-                    "reference": "master"
-                },
-                "autoload": {
-                    "psr-4": {
-                        "Http\\Factory\\Diactoros\\": "src/"
-                    }
-                }
-            }
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/harikt/psr7-asset.git"
-        },
-    ],
-    "require": {
-        //....
-        "hkt/psr7-asset": "1.*@dev",
-        "psr/http-factory": "1.*@dev",        
-        "zendframework/http-factory-diactoros": "1.*"
-    }
-}
+$di->set('Hkt\Psr7Asset\AssetAction', $di->lazyNew('Hkt\Psr7Asset\AssetAction'));
 ```

@@ -2,6 +2,7 @@
 namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ResponseInterface;
+use Zend\Diactoros\Response;
 
 class AssetResponderTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,6 +27,8 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
             'type' => $type,
         );
 
+        $response = new Response();
+
         $this->responder->setData(array(
             'asset' => $asset,
         ));
@@ -34,36 +37,28 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
 
-        $actual = $response->status->getCode();
+        $actual = $response->getStatusCode();
         $this->assertSame(200, $actual);
 
-        $actual = $response->content->getType();
+        $actual = $response->getHeaderLine('Content-Type');
         $this->assertSame($type, $actual);
 
-        $content = $response->content->get();
-        ob_start();
-        $content();
-        $actual = ob_get_clean();
-
+        $actual = (string) $response->getBody();
         $expect = file_get_contents($path);
         $this->assertSame($expect, $actual);
     }
 
     public function test__invoke_NotFound()
     {
-        $path = null;
-        $type = null;
-        $response = $this->responder->__invoke($path, $type);
+        $response = new Response();
+        $response = $this->responder->__invoke($response);
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
 
-        $actual = $response->status->getCode();
+        $actual = $response->getStatusCode();
         $this->assertSame(404, $actual);
 
-        $actual = $response->content->getType();
-        $this->assertSame('', $actual);
-
-        $content = $response->content->get();
-        $this->assertSame('', $actual);
+        $actual = (string) $response->getBody();
+        $this->assertSame('Not found', $actual);
     }
 }

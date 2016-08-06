@@ -31,6 +31,11 @@ class AssetAction
 
     /**
      *
+     */
+    protected $routeRegx = '/\/asset\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)\/(.*)/';
+
+    /**
+     *
      * Constructor.
      *
      * @param Request $request A web request object.
@@ -44,6 +49,11 @@ class AssetAction
     ) {
         $this->domain = $domain;
         $this->responder = $responder;
+    }
+
+    public function setRouteRegx($regx)
+    {
+        $this->routeRegx = $regx;
     }
 
     /**
@@ -61,15 +71,20 @@ class AssetAction
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
-        $docroot = $request->getServerParams()['DOCUMENT_ROOT'];
-        $routeResult = $request->getAttribute('Zend\Expressive\Router\RouteResult');
-        $params = $routeResult->getMatchedParams();
-        $vendor = $params['vendor'];
-        $package = $params['package'];
-        $file = $params['file'];
-        // public function __invoke($vendor, $package, $file)
-        $asset = $this->domain->getAsset($vendor, $package, $file);
-        $this->responder->setData(array('asset' => $asset));
-        return $this->responder->__invoke($response, $docroot);
+        $path = $request->getUri()->getPath();
+
+        if (preg_match($this->routeRegx, $path, $matches)) {
+            $vendor = $matches[1];
+            $package = $matches[2];
+            $file = $matches[3];
+
+            $asset = $this->domain->getAsset($vendor, $package, $file);
+            $this->responder->setData(array('asset' => $asset));
+            return $this->responder->__invoke($response);
+        }
+
+        if ($next) {
+            return $next($request, $response);
+        }
     }
 }

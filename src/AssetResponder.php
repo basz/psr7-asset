@@ -3,7 +3,7 @@ namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Factory\StreamFactoryInterface;
+use Zend\Diactoros\Stream;
 
 /**
  *
@@ -32,20 +32,12 @@ class AssetResponder
 
     /**
      *
-     * @var StreamFactoryInterface
-     *
-     */
-    protected $streamFactory;
-
-    /**
-     *
      * Constructor.
      *
      */
-    public function __construct(StreamFactoryInterface $streamFactory)
+    public function __construct()
     {
         $this->data = (object) array();
-        $this->streamFactory = $streamFactory;
     }
 
     /**
@@ -84,7 +76,7 @@ class AssetResponder
      * @return Response $response
      *
      */
-    public function __invoke(ResponseInterface $response, $docroot)
+    public function __invoke(ResponseInterface $response)
     {
         $this->response = $response;
 
@@ -118,7 +110,7 @@ class AssetResponder
     {
         $this->response =  $this->response
             ->withStatus(200)
-            ->withBody($this->streamFactory->createStreamFromResource($path))
+            ->withBody(new Stream($path))
             ->withHeader('Content-Length', (string) filesize($path))
             ->withHeader('Content-Type', $type);
     }
@@ -136,7 +128,7 @@ class AssetResponder
      */
     protected function notFound()
     {
-        $this->response = $this->response->withStatus(404)
-            ->getBody()->write("Not found");
+        $this->response = $this->response->withStatus(404);
+        $this->response->getBody()->write("Not found");
     }
 }
