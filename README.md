@@ -56,7 +56,9 @@ to `/asset/vendor/package/css/some.css`, `/asset/vendor/package/js/hello.js`, `/
 
 ## Routing
 
-The library can be used with any framework. So it makes use of preg_match under the hood. The default regx is `/\/asset\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)\/(.*)/` . If you configure your route to respond to something else, please do change the regx via `setRouteRegx` method.
+The library can be used with any framework. So it makes use of `preg_match` under the hood. The default regular expression is `/\/asset\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)\/(.*)/` . If you configure your route to respond to something else, please do change the regular expression via `setRouteRegx` method in `Hkt\Psr7Asset\AssetAction`.
+
+## Zend Expressive
 
 If you are using `zend expressive fast route` you can configure as,
 
@@ -64,7 +66,7 @@ If you are using `zend expressive fast route` you can configure as,
 $router->addRoute(new \Zend\Expressive\Router\Route('/asset/{vendor}/{package}/{file:.*}', 'Hkt\Psr7Asset\AssetAction', ['GET'], 'hkt/psr7-asset:route'));
 ```
 
-> NB : Make sure you have set `Hkt\Psr7Asset\AssetAction` to the Di container.
+> NB : Make sure you have set the service `Hkt\Psr7Asset\AssetAction` to the Di container.
 
 From your view you can use as
 
@@ -82,7 +84,7 @@ This will return `/asset/vendor/package/css/bootstrap.min.css`.
 
 With the help of mapping the `vendor/package` or directly the path you can alter the result it returns.
 
-## Overriding css, js, images
+### Overriding css, js, images
 
 Like [puli](https://github.com/puli) it is possible that you can override the style sheet, images, js etc for the downloaded package. You just need to map it. No magic under the hood.
 
