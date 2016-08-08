@@ -11,8 +11,7 @@
             "name": "Paul M Jones",
             "email": "pmjones88@gmail.com"
         }
-    ],
-    "minimum-stability": "dev",
+    ],    
     "require": {
         "psr/http-message":"^1.0",
         "zendframework/zend-diactoros":"^1.0"

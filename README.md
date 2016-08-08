@@ -16,7 +16,7 @@ composer require hkt/psr7-asset
 
 ```bash
 composer install
-phpunit -c tests/unit
+phpunit
 ```
 
 ### PSR Compliance
