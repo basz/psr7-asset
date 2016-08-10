@@ -14,15 +14,6 @@ class AssetResponder
 {
     /**
      *
-     * A web response object.
-     *
-     * @var Response
-     *
-     */
-    protected $response;
-
-    /**
-     *
      * Data for modifying the response.
      *
      * @var object
@@ -78,57 +69,51 @@ class AssetResponder
      */
     public function __invoke(ResponseInterface $response)
     {
-        $this->response = $response;
-
-        if (
-            isset($this->data->asset->path) &&
-            is_file($this->data->asset->path) &&
-            is_readable($this->data->asset->path)
-        ) {
-            $this->ok(
-                $this->data->asset->path,
-                $this->data->asset->type
-            );
-        } else {
-            $this->notFound();
+        if ($this->isValidAsset()) {
+            return $this->ok($response);
         }
-        return $this->response;
+        return $this->notFound($response);
     }
 
     /**
-     *
+    * Validate the asset
+    *
+    * @return bool
+    */
+    protected function isValidAsset()
+    {
+       return isset($this->data->asset->path)
+           && is_file($this->data->asset->path)
+           && is_readable($this->data->asset->path);
+    }
+
+    /**
      * Sets a 200 OK response with the asset contents.
      *
-     * @param string $path The filesystem path to the asset.
+     * @param ResponseInterface $response
      *
-     * @param string $type The asset media type.
-     *
-     * @return null
-     *
+     * @return ResponseInterface
      */
-    protected function ok($path, $type)
+    protected function ok(ResponseInterface $response)
     {
-        $this->response =  $this->response
+        return $response
             ->withStatus(200)
-            ->withBody(new Stream($path))
-            ->withHeader('Content-Length', (string) filesize($path))
-            ->withHeader('Content-Type', $type);
+            ->withBody(new Stream($this->data->asset->path))
+            ->withHeader('Content-Length', (string) filesize($this->data->asset->path))
+            ->withHeader('Content-Type', $this->data->asset->type)
+        ;
     }
 
     /**
-     *
      * Sets a 404 Not Found response.
      *
-     * @param string $path The filesystem path to the asset.
+     * @param ResponseInterface $response
      *
-     * @param string $type The asset media type.
-     *
-     * @return null
-     *
+     * @return ResponseInterface
      */
-    protected function notFound()
+    protected function notFound(ResponseInterface $response)
     {
-        $this->response = $this->response->withStatus(404);
-        $this->response->getBody()->write("Not found");
+        $response->getBody()->write("Not found");
+        return $response->withStatus(404);
     }
 }
