@@ -39,7 +39,7 @@ class AssetService
      *
      * Constructor.
      *
-     * @param array $map A map of vendor/package names to web asset direcories.
+     * @param array $map A map of vendor/package names to web asset directories.
      *
      * @param array $types Overrides to the media type mappings.
      *
