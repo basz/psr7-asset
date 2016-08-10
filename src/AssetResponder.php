@@ -2,7 +2,6 @@
 namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Stream;
 
 /**
@@ -16,7 +15,7 @@ class AssetResponder
      *
      * A web response object.
      *
-     * @var Response
+     * @var ResponseInterface
      *
      */
     protected $response;
@@ -73,7 +72,7 @@ class AssetResponder
      *
      * @param ResponseInterface $response
      *
-     * @return Response $response
+     * @return ResponseInterface $response
      *
      */
     public function __invoke(ResponseInterface $response)
@@ -118,10 +117,6 @@ class AssetResponder
     /**
      *
      * Sets a 404 Not Found response.
-     *
-     * @param string $path The filesystem path to the asset.
-     *
-     * @param string $type The asset media type.
      *
      * @return null
      *

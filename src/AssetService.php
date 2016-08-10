@@ -39,7 +39,7 @@ class AssetService
      *
      * Constructor.
      *
-     * @param array $map A map of vendor/package names to web asset direcories.
+     * @param array $map A map of vendor/package names to web asset directories.
      *
      * @param array $types Overrides to the media type mappings.
      *
@@ -60,7 +60,7 @@ class AssetService
      *
      * @param string $file The asset file within within the vendor package.
      *
-     * @return StdClass An object with properties $path (the real path to the
+     * @return \StdClass An object with properties $path (the real path to the
      * asset) and $type (the media type of the asset).
      *
      */
