@@ -119,10 +119,6 @@ class AssetResponder
      *
      * Sets a 404 Not Found response.
      *
-     * @param string $path The filesystem path to the asset.
-     *
-     * @param string $type The asset media type.
-     *
      * @return null
      *
      */
