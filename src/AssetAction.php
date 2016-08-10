@@ -38,9 +38,9 @@ class AssetAction
      *
      * Constructor.
      *
-     * @param Request $request A web request object.
+     * @param AssetService $domain A Domain object for assets
      *
-     * @param Response $response A web response object.
+     * @param AssetResponder $responder A Responder to build the web response.
      *
      */
     public function __construct(
@@ -66,7 +66,7 @@ class AssetAction
      *
      * @param callable $next
      *
-     * @return Response $response
+     * @return ResponseInterface
      *
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)

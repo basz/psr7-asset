@@ -2,7 +2,6 @@
 namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Stream;
 
 /**
@@ -64,7 +63,7 @@ class AssetResponder
      *
      * @param ResponseInterface $response
      *
-     * @return Response $response
+     * @return ResponseInterface $response
      *
      */
     public function __invoke(ResponseInterface $response)
