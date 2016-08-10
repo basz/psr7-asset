@@ -15,7 +15,7 @@ class AssetResponder
      *
      * A web response object.
      *
-     * @var Response
+     * @var ResponseInterface
      *
      */
     protected $response;
@@ -72,7 +72,7 @@ class AssetResponder
      *
      * @param ResponseInterface $response
      *
-     * @return Response $response
+     * @return ResponseInterface $response
      *
      */
     public function __invoke(ResponseInterface $response)

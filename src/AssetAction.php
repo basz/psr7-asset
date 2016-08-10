@@ -66,7 +66,7 @@ class AssetAction
      *
      * @param callable $next
      *
-     * @return Response $response
+     * @return ResponseInterface
      *
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
