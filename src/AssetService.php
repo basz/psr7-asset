@@ -10,12 +10,12 @@ class AssetService
 {
     /**
      *
-     * A map of vendor/package names to web asset directories.
+     * A locator to find the location
      *
-     * @var array $map
+     * @var AssetLocator $locator
      *
      */
-    protected $map;
+    protected $locator;
 
     /**
      *
@@ -39,14 +39,14 @@ class AssetService
      *
      * Constructor.
      *
-     * @param array $map A map of vendor/package names to web asset directories.
+     * @param AssetLocator $locator A locator which can get the full path of asset from vendor/package/file
      *
      * @param array $types Overrides to the media type mappings.
      *
      */
-    public function __construct(array $map, $types = array())
+    public function __construct(AssetLocator $locator, $types = array())
     {
-        $this->map = $map;
+        $this->locator = $locator;
         $this->types = array_merge($this->types, $types);
     }
 
@@ -93,12 +93,12 @@ class AssetService
         // check if path mapped to some other file
         // vendor/package/css/style.css => public/css/style.css
         $path = "{$vendor}/{$package}/{$file}";
-        if (isset($this->map[$path])) {
-            return realpath($this->map[$path]);
+        if ($this->locator->has($path)) {
+            return realpath($this->locator->get($path));
         }
-        $key = "{$vendor}/{$package}";
-        if (isset($this->map[$key])) {
-            $dir = rtrim($this->map[$key], DIRECTORY_SEPARATOR);
+        $path = "{$vendor}/{$package}";
+        if ($this->locator->has($path)) {
+            $dir = rtrim($this->locator->get($path), DIRECTORY_SEPARATOR);
             return realpath($dir . DIRECTORY_SEPARATOR . $file);
         }
     }

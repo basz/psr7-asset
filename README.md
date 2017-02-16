@@ -16,7 +16,7 @@ composer require hkt/psr7-asset
 
 ```bash
 composer install
-phpunit
+vendor/bin/phpunit
 ```
 
 ### PSR Compliance
@@ -91,10 +91,12 @@ Like [puli](https://github.com/puli) it is possible that you can override the st
 ## Configuration via Aura.Di
 
 ```php
-$di->params['Hkt\Psr7Asset\AssetService']['map'] = [
-    'vendor/package/css/hello.css' =>  dirname(dirname(__DIR__)) . '/asset/css/test.css',
-    'vendor/package' => dirname(dirname(__DIR__)) . '/asset',
+$di->params['Hkt\Psr7Asset\AssetLocator']['map'] = [
+    'vendor/package/css/hello.css' =>  '/path/to/web/css/test.css',
+    'vendor/package' => dirname(dirname(__DIR__)) . '/web',
 ];
+
+$di->set('Hkt\Psr7Asset\AssetLocator', $di->lazyNew('Hkt\Psr7Asset\AssetLocator'));
 
 $di->params['Hkt\Psr7Asset\AssetAction'] = array(
     'domain' => $di->lazyNew('Hkt\Psr7Asset\AssetService'),
