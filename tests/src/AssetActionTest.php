@@ -18,9 +18,11 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
     {
         $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'web';
 
-        $service = new AssetService(array(
+        $locator = new AssetLocator(array(
             'vendor/package' => $this->asset_dir,
         ));
+
+        $service = new AssetService($locator);
 
         $this->responder = new AssetResponder();
 

@@ -10,9 +10,10 @@ class AssetServiceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'web';
-        $this->service = new AssetService(array(
+        $locator = new AssetLocator(array(
             'vendor/package' => $this->asset_dir,
         ));
+        $this->service = new AssetService($locator);
     }
 
     public function testGetAsset()
