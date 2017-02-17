@@ -2,7 +2,8 @@
 namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Stream;
+use Zend\Diactoros\CallbackStream;
+use SplFileObject;
 
 /**
  *
@@ -95,9 +96,18 @@ class AssetResponder
      */
     protected function ok(ResponseInterface $response)
     {
+        $path = $this->data->asset->path;
+        $callable = function () use ($path) {
+            $file = new SplFileObject($path);
+            while (! $file->eof()) {
+                echo $file->fgets();
+            }
+
+            return '';
+        };
         return $response
             ->withStatus(200)
-            ->withBody(new Stream($this->data->asset->path))
+            ->withBody(new CallbackStream($callable))
             ->withHeader('Content-Length', (string) filesize($this->data->asset->path))
             ->withHeader('Content-Type', $this->data->asset->type)
         ;

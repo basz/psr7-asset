@@ -43,7 +43,11 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
         $actual = $response->getHeaderLine('Content-Type');
         $this->assertSame($type, $actual);
 
-        $actual = (string) $response->getBody();
+        ob_start();
+        (string) $response->getBody();
+        $actual = ob_get_contents();
+        ob_end_clean();
+
         $expect = file_get_contents($path);
         $this->assertSame($expect, $actual);
     }
