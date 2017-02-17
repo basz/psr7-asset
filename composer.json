@@ -15,7 +15,16 @@
     "require": {
         "php":"^5.6 || ^7.0",
         "psr/http-message":"^1.0",
-        "zendframework/zend-diactoros":"^1.0"
+        "http-interop/http-factory":"^0.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.7",
+        "http-interop/http-factory-diactoros":"^0.2"
+    },
+    "suggest": {
+        "http-interop/http-factory-diactoros": "Use zend framework zend-diactoros as the psr7 implementaion",
+        "http-interop/http-factory-slim": "Use slim http as the psr7 implementaion",
+        "http-interop/http-factory-guzzle": "Use guzzlehttp as the psr7 implementaion"
     },
     "autoload": {
         "psr-4": {
@@ -27,8 +36,5 @@
         "psr-4": {
             "Hkt\\Psr7Asset\\":"tests/src/"
         }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "5.7"
     }
 }

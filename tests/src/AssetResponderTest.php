@@ -3,6 +3,7 @@ namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
+use Http\Factory\Diactoros\ResponseFactory;
 
 class AssetResponderTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,8 +14,8 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'web';
-
-        $this->responder = new AssetResponder();
+        $responseFactory = new ResponseFactory();
+        $this->responder = new AssetResponder($responseFactory);
     }
 
     public function test__invoke_Ok()

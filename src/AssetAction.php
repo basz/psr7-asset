@@ -80,7 +80,7 @@ class AssetAction
 
             $asset = $this->domain->getAsset($vendor, $package, $file);
             $this->responder->setData(array('asset' => $asset));
-            return $this->responder->__invoke($response);
+            return $this->responder->__invoke();
         }
 
         if ($next) {

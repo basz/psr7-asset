@@ -5,6 +5,7 @@ use Hkt\Psr7Asset\AssetResponder;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
+use Http\Factory\Diactoros\ResponseFactory;
 
 class AssetActionTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +25,9 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
 
         $service = new AssetService($locator);
 
-        $this->responder = new AssetResponder();
+        $responseFactory = new ResponseFactory();
+
+        $this->responder = new AssetResponder($responseFactory);
 
         $this->action = new AssetAction($service, $this->responder);
     }
