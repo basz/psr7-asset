@@ -4,10 +4,17 @@ Asset management for PHP. This package is a fork of [Aura.Asset_Bundle](https://
 
 ## Foreword
 
+### Requriements
+
+* [PSR-7 implementation](https://packagist.org/providers/psr/http-message-implementation).
+* [Proposed PSR-17 implementation](https://github.com/http-interop/http-factory)
+
+If you are not familiar with both, choose  [http-interop/http-factory-diactoros](https://packagist.org/packages/http-interop/http-factory-diactoros)
+
 ### Installation
 
 ```
-composer require hkt/psr7-asset
+composer require hkt/psr7-asset http-interop/http-factory-diactoros
 ```
 
 ### Tests
@@ -21,7 +28,7 @@ vendor/bin/phpunit
 
 ### PSR Compliance
 
-This attempts to comply with [PSR-1][], [PSR-2][], [PSR-4][] and [PSR-7][]. If
+This attempts to comply with [PSR-1][], [PSR-2][], [PSR-4][], [PSR-7][] and the proposed [PSR-17][]. If
 you notice compliance oversights, please send a patch via pull request.
 
 [PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
@@ -29,6 +36,7 @@ you notice compliance oversights, please send a patch via pull request.
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 
 [PSR-7]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message.md
+[PSR-17]: https://github.com/php-fig/fig-standards/blob/master/proposed/http-factory/http-factory.md
 
 ## Structure of Package
 
@@ -91,17 +99,35 @@ Like [puli](https://github.com/puli) it is possible that you can override the st
 ## Configuration via Aura.Di
 
 ```php
-$di->params['Hkt\Psr7Asset\AssetLocator']['map'] = [
-    'vendor/package/css/hello.css' =>  '/path/to/web/css/test.css',
-    'vendor/package' => dirname(dirname(__DIR__)) . '/web',
-];
+<?php
+namespace Hkt\Psr7Asset;
 
-$di->set('Hkt\Psr7Asset\AssetLocator', $di->lazyNew('Hkt\Psr7Asset\AssetLocator'));
+use Aura\Di\Container;
+use Aura\Di\ContainerConfigInterface;
 
-$di->params['Hkt\Psr7Asset\AssetAction'] = array(
-    'domain' => $di->lazyNew('Hkt\Psr7Asset\AssetService'),
-    'responder' => $di->lazyNew('Hkt\Psr7Asset\AssetResponder'),
-);
+class AssetConfig implements ContainerConfigInterface
+{
+    public function define(Container $di)
+    {
+        // Choose one of the PSR-17 implementation
+        // $di->params['Hkt\Psr7Asset\AssetResponder']['responseFactory'] = $di->lazyNew('Http\Factory\Diactoros\ResponseFactory');
 
-$di->set('Hkt\Psr7Asset\AssetAction', $di->lazyNew('Hkt\Psr7Asset\AssetAction'));
+        $di->set('Hkt\Psr7Asset\AssetLocator', $di->lazyNew('Hkt\Psr7Asset\AssetLocator'));
+
+        $di->params['Hkt\Psr7Asset\AssetAction'] = array(
+            'domain' => $di->lazyNew('Hkt\Psr7Asset\AssetService'),
+            'responder' => $di->lazyNew('Hkt\Psr7Asset\AssetResponder'),
+        );
+
+        $di->set('Hkt\Psr7Asset\AssetAction', $di->lazyNew('Hkt\Psr7Asset\AssetAction'));
+    }
+
+    public function modify(Container $di)
+    {
+        $assetLocator = $di->get('Hkt\Psr7Asset\AssetLocator');
+        $assetLocator->set('vendor/package/css/hello.css', '/path/to/web/css/test.css');
+        $assetLocator->set('vendor/package', dirname(dirname(__DIR__)) . '/web');
+        // Map more paths and location as above.
+    }
+}
 ```

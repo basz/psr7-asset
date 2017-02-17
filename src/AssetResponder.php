@@ -1,6 +1,7 @@
 <?php
 namespace Hkt\Psr7Asset;
 
+use Interop\Http\Factory\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use SplFileObject;
 
@@ -32,7 +33,7 @@ class AssetResponder
      * Constructor.
      *
      */
-    public function __construct($responseFactory)
+    public function __construct(ResponseFactoryInterface $responseFactory)
     {
         $this->data = (object) array();
         $this->responseFactory = $responseFactory;
