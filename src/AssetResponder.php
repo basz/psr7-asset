@@ -2,7 +2,6 @@
 namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\CallbackStream;
 use SplFileObject;
 
 /**
@@ -23,12 +22,20 @@ class AssetResponder
 
     /**
      *
+     * @var Interop\Http\Factory\ResponseFactoryInterface
+     *
+     */
+    protected $responseFactory;
+
+    /**
+     *
      * Constructor.
      *
      */
-    public function __construct()
+    public function __construct($responseFactory)
     {
         $this->data = (object) array();
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -60,19 +67,17 @@ class AssetResponder
 
     /**
      *
-     * Modifies and returns the response.
-     *
-     * @param ResponseInterface $response
+     * Returns the response.
      *
      * @return ResponseInterface $response
      *
      */
-    public function __invoke(ResponseInterface $response)
+    public function __invoke()
     {
         if ($this->isValidAsset()) {
-            return $this->ok($response);
+            return $this->ok();
         }
-        return $this->notFound($response);
+        return $this->notFound();
     }
 
     /**
@@ -90,11 +95,9 @@ class AssetResponder
     /**
      * Sets a 200 OK response with the asset contents.
      *
-     * @param ResponseInterface $response
-     *
      * @return ResponseInterface
      */
-    protected function ok(ResponseInterface $response)
+    protected function ok()
     {
         $path = $this->data->asset->path;
         $callable = function () use ($path) {
@@ -105,8 +108,10 @@ class AssetResponder
 
             return '';
         };
+
+        $response = $this->responseFactory->createResponse(200);
+
         return $response
-            ->withStatus(200)
             ->withBody(new CallbackStream($callable))
             ->withHeader('Content-Length', (string) filesize($this->data->asset->path))
             ->withHeader('Content-Type', $this->data->asset->type)
@@ -116,13 +121,12 @@ class AssetResponder
     /**
      * Sets a 404 Not Found response.
      *
-     * @param ResponseInterface $response
-     *
      * @return ResponseInterface
      */
-    protected function notFound(ResponseInterface $response)
+    protected function notFound()
     {
+        $response = $this->responseFactory->createResponse(404);
         $response->getBody()->write("Not found");
-        return $response->withStatus(404);
+        return $response;
     }
 }
