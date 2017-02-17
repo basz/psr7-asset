@@ -28,8 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Hkt\\Psr7Asset\\":"src/",
-            "Hkt\\Psr7Asset\\_Config\\":"config/"
+            "Hkt\\Psr7Asset\\":"src/"
         }
     },
     "autoload-dev": {
