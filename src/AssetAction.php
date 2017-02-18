@@ -31,8 +31,12 @@ class AssetAction
 
     /**
      *
+     * A Router object to extract the vendor/package/file from path
+     *
+     * @var Router
+     *
      */
-    protected $routeRegx = '/\/asset\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)\/(.*)/';
+    protected $router;
 
     /**
      *
@@ -45,15 +49,15 @@ class AssetAction
      */
     public function __construct(
         AssetService $domain,
-        AssetResponder $responder
+        AssetResponder $responder,
+        Router $router = null
     ) {
         $this->domain = $domain;
         $this->responder = $responder;
-    }
-
-    public function setRouteRegx($regx)
-    {
-        $this->routeRegx = $regx;
+        $this->router = $router;
+        if ($router == null) {
+            $this->router = new Router();
+        }
     }
 
     /**
@@ -71,16 +75,16 @@ class AssetAction
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
-        $path = $request->getUri()->getPath();
+        $route = $this->router->match($request);
 
-        if (preg_match($this->routeRegx, $path, $matches)) {
-            $vendor = $matches[1];
-            $package = $matches[2];
-            $file = $matches[3];
-
-            $asset = $this->domain->getAsset($vendor, $package, $file);
+        if ($route) {
+            $asset = $this->domain->getAsset($route->vendor, $route->package, $route->file);
             $this->responder->setData(array('asset' => $asset));
-            return $this->responder->__invoke();
+            try {
+                return $this->responder->__invoke();
+            } catch (Exception\FileNotReadable $e) {
+                // do nothing
+            }
         }
 
         if ($next) {
