@@ -70,6 +70,8 @@ class AssetResponder
      *
      * Returns the response.
      *
+     * @throws Exception\FileNotReadable
+     *
      * @return ResponseInterface $response
      *
      */
@@ -78,7 +80,8 @@ class AssetResponder
         if ($this->isValidAsset()) {
             return $this->ok();
         }
-        return $this->notFound();
+
+        throw new Exception\FileNotReadable();
     }
 
     /**
@@ -117,17 +120,5 @@ class AssetResponder
             ->withHeader('Content-Length', (string) filesize($this->data->asset->path))
             ->withHeader('Content-Type', $this->data->asset->type)
         ;
-    }
-
-    /**
-     * Sets a 404 Not Found response.
-     *
-     * @return ResponseInterface
-     */
-    protected function notFound()
-    {
-        $response = $this->responseFactory->createResponse(404);
-        $response->getBody()->write("Not found");
-        return $response;
     }
 }

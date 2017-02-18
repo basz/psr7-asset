@@ -64,7 +64,16 @@ to `/asset/vendor/package/css/some.css`, `/asset/vendor/package/js/hello.js`, `/
 
 ## Routing
 
-The library can be used with any framework. So it makes use of `preg_match` under the hood. The default regular expression is `/\/asset\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)\/(.*)/` . If you configure your route to respond to something else, please do change the regular expression via `setRouteRegx` method in `Hkt\Psr7Asset\AssetAction`.
+The library can be used with any framework. So it makes use of `preg_match` under the hood. The default regular expression is `/\/asset\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)\/(.*)/` .
+
+You can modify the regular expression by intantiating a `Router` object
+and passing it as 3rd argument to `AssetAction`
+
+```php
+$router = new Hkt\Psr7Asset\Router('your-regx');
+// ... more code
+$assetAction = new Hkt\Psr7Asset\AssetAction($service, $responder, $router);
+```
 
 ## Zend Expressive
 

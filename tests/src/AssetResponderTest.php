@@ -28,13 +28,11 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
             'type' => $type,
         );
 
-        $response = new Response();
-
         $this->responder->setData(array(
             'asset' => $asset,
         ));
 
-        $response = $this->responder->__invoke($response);
+        $response = $this->responder->__invoke();
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
 
@@ -55,15 +53,7 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
 
     public function test__invoke_NotFound()
     {
-        $response = new Response();
-        $response = $this->responder->__invoke($response);
-
-        $this->assertInstanceOf(ResponseInterface::class, $response);
-
-        $actual = $response->getStatusCode();
-        $this->assertSame(404, $actual);
-
-        $actual = (string) $response->getBody();
-        $this->assertSame('Not found', $actual);
+        $this->setExpectedException('Hkt\Psr7Asset\Exception\FileNotReadable');
+        $this->responder->__invoke();
     }
 }
