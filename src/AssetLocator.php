@@ -1,12 +1,14 @@
 <?php
 namespace Hkt\Psr7Asset;
 
+use IteratorAggregate;
+
 /**
  *
  * @package psr7-asset
  *
  */
-class AssetLocator
+class AssetLocator implements IteratorAggregate
 {
     /**
      *
@@ -62,7 +64,7 @@ class AssetLocator
 
     /**
      *
-     * Returns a helper object instance, using the map to factory it if needed.
+     * Returns the full path for the key.
      *
      * @param string $path path or vendor/package
      *
@@ -78,5 +80,17 @@ class AssetLocator
         }
 
         return $this->map[$path];
+    }
+
+    /**
+     *
+     * All the mappings which can be iterated.
+     *
+     * @return ArrayIterator
+     *
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->map);
     }
 }
