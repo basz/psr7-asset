@@ -78,7 +78,22 @@ $assetAction = new Hkt\Psr7Asset\AssetAction($service, $responder, $router);
 
 ## Zend Expressive
 
-If you are using `zend expressive fast route` you can configure as,
+If you are using `zend expressive you can configure,
+
+### AuraRouter
+
+```php
+<?php
+$route = new \Zend\Expressive\Router\Route('/asset/{vendor}/{package}/{file}', 'Hkt\Psr7Asset\AssetAction', ['GET'], 'hkt/psr7-asset:route');
+$route->setOptions([
+    'tokens' => [
+        'file' => '(.*)'
+    ]
+]);
+$router->addRoute($route);
+```
+
+### FastRoute
 
 ```php
 <?php
@@ -121,7 +136,8 @@ class AssetConfig implements ContainerConfigInterface
 {
     public function define(Container $di)
     {
-        $di->params['Hkt\Psr7Asset\AssetResponder']['responseFactory'] = $di->lazyNew('Http\Factory\Diactoros\ResponseFactory');
+        $di->set('Interop\Http\Factory\ResponseFactoryInterface', $di->lazyNew('Http\Factory\Diactoros\ResponseFactory'));
+        $di->params['Hkt\Psr7Asset\AssetResponder']['responseFactory'] = $di->lazyGet('Interop\Http\Factory\ResponseFactoryInterface');
 
         // Alternative way than adding all into Constructor
         // $di->params['Hkt\Psr7Asset\AssetLocator']['map'] = [
@@ -131,6 +147,8 @@ class AssetConfig implements ContainerConfigInterface
 
         $di->set('Hkt\Psr7Asset\Router', $di->lazyNew('Hkt\Psr7Asset\Router'));
         $di->set('Hkt\Psr7Asset\AssetLocator', $di->lazyNew('Hkt\Psr7Asset\AssetLocator'));
+
+        $di->params['Hkt\Psr7Asset\AssetService']['locator'] = $di->lazyGet('Hkt\Psr7Asset\AssetLocator');
 
         $di->params['Hkt\Psr7Asset\AssetAction'] = array(
             'domain' => $di->lazyNew('Hkt\Psr7Asset\AssetService'),
