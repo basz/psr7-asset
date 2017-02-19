@@ -13,7 +13,7 @@ If you are not familiar with both, choose  [http-interop/http-factory-diactoros]
 
 ### Installation
 
-```
+```bash
 composer require hkt/psr7-asset http-interop/http-factory-diactoros
 ```
 
@@ -70,6 +70,7 @@ You can modify the regular expression by intantiating a `Router` object
 and passing it as 3rd argument to `AssetAction`
 
 ```php
+<?php
 $router = new Hkt\Psr7Asset\Router('your-regx');
 // ... more code
 $assetAction = new Hkt\Psr7Asset\AssetAction($service, $responder, $router);
@@ -80,6 +81,7 @@ $assetAction = new Hkt\Psr7Asset\AssetAction($service, $responder, $router);
 If you are using `zend expressive fast route` you can configure as,
 
 ```php
+<?php
 $router->addRoute(new \Zend\Expressive\Router\Route('/asset/{vendor}/{package}/{file:.*}', 'Hkt\Psr7Asset\AssetAction', ['GET'], 'hkt/psr7-asset:route'));
 ```
 
@@ -88,6 +90,7 @@ $router->addRoute(new \Zend\Expressive\Router\Route('/asset/{vendor}/{package}/{
 From your view you can use as
 
 ```php
+<?php
 $this->url('hkt/psr7-asset:route', [
     'vendor' => 'vendor',
     'package' => 'package',
