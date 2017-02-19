@@ -1,6 +1,7 @@
 <?php
 namespace Hkt\Psr7Asset;
 
+use ArrayIterator;
 use IteratorAggregate;
 
 /**
