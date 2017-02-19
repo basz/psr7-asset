@@ -8,7 +8,8 @@ class AssetConfig implements ContainerConfigInterface
 {
     public function define(Container $di)
     {
-        $di->params['Hkt\Psr7Asset\AssetResponder']['responseFactory'] = $di->lazyNew('Http\Factory\Diactoros\ResponseFactory');
+        $di->set('Interop\Http\Factory\ResponseFactoryInterface', $di->lazyNew('Http\Factory\Diactoros\ResponseFactory'));
+        $di->params['Hkt\Psr7Asset\AssetResponder']['responseFactory'] = $di->lazyGet('Interop\Http\Factory\ResponseFactoryInterface');
 
         // Alternative way than adding all into Constructor
         // $di->params['Hkt\Psr7Asset\AssetLocator']['map'] = [
@@ -18,6 +19,8 @@ class AssetConfig implements ContainerConfigInterface
 
         $di->set('Hkt\Psr7Asset\Router', $di->lazyNew('Hkt\Psr7Asset\Router'));
         $di->set('Hkt\Psr7Asset\AssetLocator', $di->lazyNew('Hkt\Psr7Asset\AssetLocator'));
+
+        $di->params['Hkt\Psr7Asset\AssetService']['locator'] = $di->lazyGet('Hkt\Psr7Asset\AssetLocator');
 
         $di->params['Hkt\Psr7Asset\AssetAction'] = array(
             'domain' => $di->lazyNew('Hkt\Psr7Asset\AssetService'),
