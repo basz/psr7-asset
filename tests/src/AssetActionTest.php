@@ -29,7 +29,9 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
 
         $this->responder = new AssetResponder($responseFactory);
 
-        $this->action = new AssetAction($service, $this->responder);
+        $router = new Router();
+
+        $this->action = new AssetAction($service, $this->responder, $router);
     }
 
     public function test__invoke()
