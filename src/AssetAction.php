@@ -50,14 +50,11 @@ class AssetAction
     public function __construct(
         AssetService $domain,
         AssetResponder $responder,
-        Router $router = null
+        Router $router
     ) {
         $this->domain = $domain;
         $this->responder = $responder;
         $this->router = $router;
-        if ($router == null) {
-            $this->router = new Router();
-        }
     }
 
     /**
