@@ -90,6 +90,7 @@ class AssetService
      */
     protected function getPath($vendor, $package, $file)
     {
+        $file = ltrim($file, '/');
         // check if path mapped to some other file
         // vendor/package/css/style.css => public/css/style.css
         $path = "{$vendor}/{$package}/{$file}";

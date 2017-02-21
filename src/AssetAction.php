@@ -1,15 +1,16 @@
 <?php
 namespace Hkt\Psr7Asset;
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\ServerMiddleware\DelegateInterface;
 
 /**
  *
  * Maps an asset request to an asset response via the asset service.
  *
  */
-class AssetAction
+class AssetAction implements MiddlewareInterface
 {
     /**
      *
@@ -63,14 +64,12 @@ class AssetAction
      *
      * @param ServerRequestInterface $request
      *
-     * @param ResponseInterface $response
-     *
-     * @param callable $next
+     * @param DelegateInterface $delegate
      *
      * @return ResponseInterface
      *
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
         $route = $this->router->match($request);
 
@@ -84,8 +83,6 @@ class AssetAction
             }
         }
 
-        if ($next) {
-            return $next($request, $response);
-        }
+        return $delegate($request);
     }
 }
