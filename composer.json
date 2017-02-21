@@ -23,8 +23,7 @@
         "http-interop/http-factory-diactoros":"^0.2"
     },
     "suggest": {
-        "http-interop/http-factory-diactoros": "Use zend framework zend-diactoros as the psr7 implementaion",
-        "http-interop/http-factory-slim": "Use slim http as the psr7 implementaion",
+        "http-interop/http-factory-diactoros": "Use zend framework zend-diactoros as the psr7 implementaion",        
         "http-interop/http-factory-guzzle": "Use guzzlehttp as the psr7 implementaion"
     },
     "autoload": {
