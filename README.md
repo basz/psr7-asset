@@ -7,6 +7,7 @@ Asset management for PHP. This package is a fork of [Aura.Asset_Bundle](https://
 ### Requriements
 
 * [PSR-7 implementation](https://packagist.org/providers/psr/http-message-implementation).
+* [Proposed PSR-15 implementation](https://github.com/http-interop/http-middleware)
 * [Proposed PSR-17 implementation](https://github.com/http-interop/http-factory)
 
 If you are not familiar with both, choose  [http-interop/http-factory-diactoros](https://packagist.org/packages/http-interop/http-factory-diactoros)
@@ -28,7 +29,7 @@ vendor/bin/phpunit
 
 ### PSR Compliance
 
-This attempts to comply with [PSR-1][], [PSR-2][], [PSR-4][], [PSR-7][] and the proposed [PSR-17][]. If
+This attempts to comply with [PSR-1][], [PSR-2][], [PSR-4][], [PSR-7][], the proposed [PSR-15][] and [PSR-17][]. If
 you notice compliance oversights, please send a patch via pull request.
 
 [PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
@@ -36,6 +37,7 @@ you notice compliance oversights, please send a patch via pull request.
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 
 [PSR-7]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-7-http-message.md
+[PSR-15]: https://github.com/php-fig/fig-standards/blob/master/proposed/http-middleware/middleware.md
 [PSR-17]: https://github.com/php-fig/fig-standards/blob/master/proposed/http-factory/http-factory.md
 
 ## Structure of Package
