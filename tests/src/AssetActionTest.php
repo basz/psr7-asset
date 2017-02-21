@@ -34,7 +34,7 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
         $this->action = new AssetAction($service, $this->responder, $router);
     }
 
-    public function test__invoke()
+    public function testProcess()
     {
         $request = ServerRequestFactory::fromGlobals(
             [
@@ -45,8 +45,8 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
             [],
             []
         );
-        $response = new Response();
-        $actual = $this->action->__invoke($request, $response);
+        $delegate = new Delegate();
+        $actual = $this->action->process($request, $delegate);
 
         $this->assertInstanceOf(ResponseInterface::class, $actual);
 
