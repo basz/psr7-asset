@@ -45,7 +45,8 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
             [],
             []
         );
-        $actual = $this->action->process($request);
+        $delegate = new Delegate();
+        $actual = $this->action->process($request, $delegate);
 
         $this->assertInstanceOf(ResponseInterface::class, $actual);
 
