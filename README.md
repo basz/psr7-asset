@@ -125,6 +125,12 @@ With the help of mapping the `vendor/package` or directly the path you can alter
 
 Like [puli](https://github.com/puli) it is possible that you can override the style sheet, images, js etc for the downloaded package. You just need to map it. No magic under the hood.
 
+## Caching
+
+The asset files are served by PHP. There is an experimental repo 
+https://github.com/harikt/psr7-asset-cache that can do caching.
+So files can be served by the web server itself.
+
 ## Configuration via Aura.Di
 
 Pass `Hkt\Psr7Asset\Container\AssetConfig` to your
