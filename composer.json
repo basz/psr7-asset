@@ -20,10 +20,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "5.7",
-        "http-interop/http-factory-diactoros":"^0.2"
+        "http-interop/http-factory-diactoros":"^0.2",
+        "aura/di": "^3.0"
     },
     "suggest": {
-        "http-interop/http-factory-diactoros": "Use zend framework zend-diactoros as the psr7 implementaion",        
+        "http-interop/http-factory-diactoros": "Use zend framework zend-diactoros as the psr7 implementaion",
         "http-interop/http-factory-guzzle": "Use guzzlehttp as the psr7 implementaion"
     },
     "autoload": {

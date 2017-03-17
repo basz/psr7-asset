@@ -43,7 +43,7 @@ you notice compliance oversights, please send a patch via pull request.
 ## Structure of Package
 
 Assume you have a `Vendor.Package`. Your assets can be any where. Consider it is in the
-`web` folder. The folder names `css`, `images`, `js` can be according to your preffered name.
+`public` folder. The folder names `css`, `images`, `js` can be according to your preffered name.
 
 
 ```bash
@@ -51,7 +51,7 @@ Assume you have a `Vendor.Package`. Your assets can be any where. Consider it is
 │   ├── Cli
 │   └── Web
 ├── tests
-└── web
+└── public
     ├── css
     │   └── some.css
     ├── images
@@ -127,46 +127,34 @@ Like [puli](https://github.com/puli) it is possible that you can override the st
 
 ## Configuration via Aura.Di
 
+Pass `Hkt\Psr7Asset\Container\AssetConfig` to your
+[Container Builder](http://auraphp.com/packages/3.x/Di/config.html#1-1-8).
+Don't forget to set the service `Interop\Http\Factory\ResponseFactoryInterface`
+as below.
+
 ```php
 <?php
-namespace Hkt\Psr7Asset;
+namespace Vendor\Package;
 
 use Aura\Di\Container;
 use Aura\Di\ContainerConfigInterface;
 
-class AssetConfig implements ContainerConfigInterface
+class AppConfig implements ContainerConfigInterface
 {
     public function define(Container $di)
     {
+        // add one of the http-interop/http-factory library
         $di->set('Interop\Http\Factory\ResponseFactoryInterface', $di->lazyNew('Http\Factory\Diactoros\ResponseFactory'));
-        $di->params['Hkt\Psr7Asset\AssetResponder']['responseFactory'] = $di->lazyGet('Interop\Http\Factory\ResponseFactoryInterface');
-
-        // Alternative way than adding all into Constructor
-        // $di->params['Hkt\Psr7Asset\AssetLocator']['map'] = [
-        //     'vendor/package/css/hello.css' =>  '/path/to/web/css/test.css',
-        //     'vendor/package' => dirname(dirname(__DIR__)) . '/web',
-        // ];
-
-        $di->set('Hkt\Psr7Asset\Router', $di->lazyNew('Hkt\Psr7Asset\Router'));
-        $di->set('Hkt\Psr7Asset\AssetLocator', $di->lazyNew('Hkt\Psr7Asset\AssetLocator'));
-
-        $di->params['Hkt\Psr7Asset\AssetService']['locator'] = $di->lazyGet('Hkt\Psr7Asset\AssetLocator');
-
-        $di->params['Hkt\Psr7Asset\AssetAction'] = array(
-            'domain' => $di->lazyNew('Hkt\Psr7Asset\AssetService'),
-            'responder' => $di->lazyNew('Hkt\Psr7Asset\AssetResponder'),
-            'router' => $di->lazyGet('Hkt\Psr7Asset\Router'),
-        );
-
-        $di->set('Hkt\Psr7Asset\AssetAction', $di->lazyNew('Hkt\Psr7Asset\AssetAction'));
-    }
+    }        
 
     public function modify(Container $di)
     {
-        $assetLocator = $di->get('Hkt\Psr7Asset\AssetLocator');
-        $assetLocator->set('vendor/package/css/hello.css', '/path/to/web/css/test.css');
-        $assetLocator->set('vendor/package', dirname(dirname(__DIR__)) . '/web');
         // Map more paths and location as above.
+        $assetLocator = $di->get('Hkt\Psr7Asset\AssetLocator');
+        // path to exact location
+        $assetLocator->set('vendor/package/css/hello.css', '/path/to/web/css/test.css');
+        // path to folder
+        $assetLocator->set('vendor/package', dirname(dirname(__DIR__)) . '/public');        
     }
 }
 ```
