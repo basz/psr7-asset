@@ -8,6 +8,8 @@
 * Added CallbackStream which is copied from https://github.com/zendframework/zend-diactoros/blob/83e8d98b9915de76c659ce27d683c02a0f99fa90/src/CallbackStream.php
 * Added https://github.com/http-interop/http-factory, so can work with any psr-7 implementations.
 * Added Router class which can be configured with regx which can be injected to AssetAction if needed.
+* Added `Hkt\Psr7Asset\Container\AssetConfig` class and removed the example class.
+* Updated Readme
 
 ## BC BREAK
 
