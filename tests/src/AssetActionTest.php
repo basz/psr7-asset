@@ -17,7 +17,7 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'web';
+        $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'public';
 
         $locator = new AssetLocator(array(
             'vendor/package' => $this->asset_dir,
