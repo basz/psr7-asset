@@ -1,3 +1,8 @@
+# 0.3.0
+
+* Updated http-interop dependencies via [webimpress/http-middleware-compatibility](https://github.com/webimpress/http-middleware-compatibility) [PR #25](https://github.com/harikt/psr7-asset/pull/25) .
+* Fixed [HeaderSecurity Exception when mime type isn't registered](https://github.com/harikt/psr7-asset/issues/24) when no extension is registered. Currently using `application/octet-stream` as the [default mime-type](https://github.com/harikt/psr7-asset/pull/26) . Thank you @basz for both PR's.
+
 # 0.2.0
 
 ## Added
