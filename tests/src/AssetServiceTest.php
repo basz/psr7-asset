@@ -31,7 +31,7 @@ class AssetServiceTest extends \PHPUnit_Framework_TestCase
     {
         $asset = $this->service->getAsset('no-vendor', 'no-package', 'style.css');
         $this->assertNull($asset->path);
-        $this->assertNull($asset->type);
+        $this->assertEquals('application/octet-stream', $asset->type);
     }
 
     public function testGetAsset_noType()
@@ -41,6 +41,6 @@ class AssetServiceTest extends \PHPUnit_Framework_TestCase
         $expect = $this->asset_dir . DIRECTORY_SEPARATOR . 'fake.txt';
         $this->assertSame($expect, $asset->path);
 
-        $this->assertNull($asset->type);
+        $this->assertEquals('application/octet-stream', $asset->type);
     }
 }
