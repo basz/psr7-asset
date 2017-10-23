@@ -119,5 +119,7 @@ class AssetService
         if (isset($this->types[$ext])) {
             return $this->types[$ext];
         }
+
+        return 'application/octet-stream';
     }
 }
