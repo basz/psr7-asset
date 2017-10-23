@@ -2,8 +2,8 @@
 namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
-use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 
 /**
  *
@@ -64,12 +64,12 @@ class AssetAction implements MiddlewareInterface
      *
      * @param ServerRequestInterface $request
      *
-     * @param DelegateInterface $delegate
+     * @param RequestHandlerInterface $delegate
      *
      * @return ResponseInterface
      *
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler)
     {
         $route = $this->router->match($request);
 
@@ -83,6 +83,6 @@ class AssetAction implements MiddlewareInterface
             }
         }
 
-        return $delegate($request);
+        return $handler->handle($request);
     }
 }
