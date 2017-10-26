@@ -2,11 +2,11 @@
 
 namespace Hkt\Psr7Asset;
 
-use Interop\Http\Server\RequestHandlerInterface;
+use Webimpress\HttpMiddlewareCompatibility\HandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response;
 
-class RequestHandler implements RequestHandlerInterface
+class RequestHandler implements HandlerInterface
 {
     public function handle(ServerRequestInterface $request)
     {
