@@ -1,10 +1,10 @@
 <?php
+
 namespace Hkt\Psr7Asset;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Webimpress\HttpMiddlewareCompatibility\MiddlewareInterface;
 use Webimpress\HttpMiddlewareCompatibility\HandlerInterface;
-
+use Webimpress\HttpMiddlewareCompatibility\MiddlewareInterface;
 use const Webimpress\HttpMiddlewareCompatibility\HANDLER_METHOD;
 
 /**
