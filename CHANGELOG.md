@@ -1,3 +1,7 @@
+# 0.3.1
+
+* Fixes [webimpress/http-middleware-compatibility](https://github.com/webimpress/http-middleware-compatibility) implementation.
+
 # 0.3.0
 
 * Updated http-interop dependencies via [webimpress/http-middleware-compatibility](https://github.com/webimpress/http-middleware-compatibility) [PR #25](https://github.com/harikt/psr7-asset/pull/25) .
