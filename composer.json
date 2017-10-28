@@ -10,19 +10,26 @@
         {
             "name": "Paul M Jones",
             "email": "pmjones88@gmail.com"
+        },
+        {
+            "name": "Bas Kamer",
+            "email": "baskamer@gmail.com"
         }
     ],
+    "config":            {
+        "sort-packages":       true
+    },
     "require": {
-        "php":"^5.6 || ^7.0",
-        "psr/http-message":"^1.0",
-        "http-interop/http-factory":"^0.3",
-        "http-interop/http-middleware": "^0.5",
+        "php": "^5.6 || ^7.0",
+        "http-interop/http-factory": "^0.3",
+        "psr/http-message": "^1.0",
         "webimpress/http-middleware-compatibility": "^0.1.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.7",
-        "http-interop/http-factory-diactoros":"^0.3",
-        "aura/di": "^3.0"
+        "aura/di": "^3.0",
+        "http-interop/http-factory-diactoros": "^0.3",
+        "http-interop/http-middleware": "^0.5",
+        "phpunit/phpunit": "5.7"
     },
     "suggest": {
         "http-interop/http-factory-diactoros": "Use zend framework zend-diactoros as the psr7 implementaion",

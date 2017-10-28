@@ -1,11 +1,9 @@
 <?php
 namespace Hkt\Psr7Asset;
 
-use Hkt\Psr7Asset\AssetResponder;
-use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequestFactory;
 use Http\Factory\Diactoros\ResponseFactory;
+use Psr\Http\Message\ResponseInterface;
+use Zend\Diactoros\ServerRequestFactory;
 
 class AssetActionTest extends \PHPUnit_Framework_TestCase
 {
