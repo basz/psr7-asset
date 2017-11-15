@@ -4,7 +4,7 @@ Asset management for PHP. This package is a fork of [Aura.Asset_Bundle](https://
 
 ## Foreword
 
-### Requriements
+### Requirements
 
 * [PSR-7 implementation](https://packagist.org/providers/psr/http-message-implementation).
 * [Proposed PSR-15 implementation](https://github.com/http-interop/http-middleware)
@@ -26,6 +26,14 @@ composer require hkt/psr7-asset http-interop/http-factory-diactoros
 composer install
 vendor/bin/phpunit
 ```
+
+or you may use;
+
+```bash
+composer install
+composer check
+```
+
 
 ### PSR Compliance
 
