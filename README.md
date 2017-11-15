@@ -27,6 +27,14 @@ composer install
 vendor/bin/phpunit
 ```
 
+or you may use;
+
+```bash
+composer install
+composer check
+```
+
+
 ### PSR Compliance
 
 This attempts to comply with [PSR-1][], [PSR-2][], [PSR-4][], [PSR-7][], the proposed [PSR-15][] and [PSR-17][]. If
