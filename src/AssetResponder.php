@@ -118,7 +118,6 @@ class AssetResponder
         return $response
             ->withBody(new CallbackStream($callable))
             ->withHeader('Content-Length', (string) filesize($this->data->asset->path))
-            ->withHeader('Content-Type', $this->data->asset->type)
-        ;
+            ->withHeader('Content-Type', $this->data->asset->type);
     }
 }
