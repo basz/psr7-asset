@@ -4,7 +4,7 @@ Asset management for PHP. This package is a fork of [Aura.Asset_Bundle](https://
 
 ## Foreword
 
-### Requriements
+### Requirements
 
 * [PSR-7 implementation](https://packagist.org/providers/psr/http-message-implementation).
 * [Proposed PSR-15 implementation](https://github.com/http-interop/http-middleware)
