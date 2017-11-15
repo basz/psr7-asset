@@ -54,6 +54,6 @@
         "check": [
             "@test"
         ],
-        "test": "phpunit --colors=always",
+        "test": "phpunit --colors=always"
     }
 }
