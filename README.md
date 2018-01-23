@@ -75,14 +75,18 @@ to `/asset/vendor/package/css/some.css`, `/asset/vendor/package/js/hello.js`, `/
 
 The library can be used with any framework. So it makes use of `preg_match` under the hood. The default regular expression is `/\/asset\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)\/(.*)/` .
 
-You can modify the regular expression by intantiating a `Router` object
-and passing it as 3rd argument to `AssetAction`
+You can modify the regular expression when intantiating the `Router` object which is passed as 3rd argument to `AssetAction`.
 
 ```php
 <?php
-$router = new Hkt\Psr7Asset\Router('your-regx');
-// ... more code
+$locator   = new Hkt\Psr7Asset\AssetLocator();
+$service   = new Hkt\Psr7Asset\AssetService($locator);
+$responder = new Hkt\Psr7Asset\AssetResponder(new Http\Factory\Diactoros\ResponseFactory());
+$router    = new Hkt\Psr7Asset\Router();
 $assetAction = new Hkt\Psr7Asset\AssetAction($service, $responder, $router);
+
+// ... more code
+$assetAction->process($request, $requestHandler)
 ```
 
 ## Zend Expressive
@@ -128,9 +132,24 @@ This will return `/asset/vendor/package/css/bootstrap.min.css`.
 
 With the help of mapping the `vendor/package` or directly the path you can alter the result it returns.
 
+Eg : 
+
+```php
+$locator->set('vendor/package', '/full/path/to/vendor/package');
+```
+
 ### Overriding css, js, images
 
 Like [puli](https://github.com/puli) it is possible that you can override the style sheet, images, js etc for the downloaded package. You just need to map it. No magic under the hood.
+
+Eg : 
+
+```php
+$locator->set('vendor/package', '/full/path/to/vendor/package');
+$locator->set('vendor/package/css/style.css', '/full/path/to/vendor/package/public/css/style.css');
+// override vendor/package style sheet, same applies for js and images
+$locator->set('vendor/package/css/style.css', '/full/path/to/application/specific/public/css/style.css');
+```
 
 ## Caching
 
@@ -158,7 +177,7 @@ class AppConfig implements ContainerConfigInterface
     {
         // add one of the http-interop/http-factory library
         $di->set('Interop\Http\Factory\ResponseFactoryInterface', $di->lazyNew('Http\Factory\Diactoros\ResponseFactory'));
-    }        
+    }
 
     public function modify(Container $di)
     {
@@ -167,7 +186,7 @@ class AppConfig implements ContainerConfigInterface
         // path to exact location
         $assetLocator->set('vendor/package/css/hello.css', '/path/to/web/css/test.css');
         // path to folder
-        $assetLocator->set('vendor/package', dirname(dirname(__DIR__)) . '/public');        
+        $assetLocator->set('vendor/package', dirname(dirname(__DIR__)) . '/public');
     }
 }
 ```
