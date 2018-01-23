@@ -2,12 +2,13 @@
 namespace Hkt\Psr7Asset;
 
 use Hkt\Psr7Asset\AssetResponder;
+use Http\Factory\Diactoros\ResponseFactory;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
-use Http\Factory\Diactoros\ResponseFactory;
 
-class RouterTest extends \PHPUnit_Framework_TestCase
+class RouterTest extends TestCase
 {
     protected $router;
 

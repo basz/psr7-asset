@@ -1,3 +1,6 @@
+# 0.4.0
+* [PSR-15](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-15-request-handlers.md)
+
 # 0.3.1
 
 * Fixes [webimpress/http-middleware-compatibility](https://github.com/webimpress/http-middleware-compatibility) implementation.
