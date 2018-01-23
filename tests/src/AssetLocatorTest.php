@@ -1,7 +1,9 @@
 <?php
 namespace Hkt\Psr7Asset;
 
-class AssetLocatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AssetLocatorTest extends TestCase
 {
 
     public function setUp()
@@ -29,7 +31,7 @@ class AssetLocatorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetThrowsException()
     {
-        $this->setExpectedException('Hkt\Psr7Asset\Exception\PathNotFound');
+        $this->expectException('Hkt\Psr7Asset\Exception\PathNotFound');
         $this->locator->get('another/vendor');
     }
 }

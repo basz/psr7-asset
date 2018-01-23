@@ -1,7 +1,9 @@
 <?php
 namespace Hkt\Psr7Asset;
 
-class AssetServiceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AssetServiceTest extends TestCase
 {
     protected $service;
 

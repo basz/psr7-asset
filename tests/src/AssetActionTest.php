@@ -3,9 +3,10 @@ namespace Hkt\Psr7Asset;
 
 use Http\Factory\Diactoros\ResponseFactory;
 use Psr\Http\Message\ResponseInterface;
+use PHPUnit\Framework\TestCase;
 use Zend\Diactoros\ServerRequestFactory;
 
-class AssetActionTest extends \PHPUnit_Framework_TestCase
+class AssetActionTest extends TestCase
 {
     protected $action;
 
