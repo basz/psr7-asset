@@ -1,3 +1,6 @@
+# 0.5.0
+* [PSR-17](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-17-http-factory.md)
+
 # 0.4.0
 * [PSR-15](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-15-request-handlers.md)
 * PHP 7+ only due to PSR-15 constraint.
