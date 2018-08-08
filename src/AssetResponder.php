@@ -1,7 +1,7 @@
 <?php
 namespace Hkt\Psr7Asset;
 
-use Interop\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use SplFileObject;
 
