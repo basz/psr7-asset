@@ -1,17 +1,18 @@
 <?php
 namespace Hkt\Psr7Asset;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 use Http\Factory\Diactoros\ResponseFactory;
 
-class AssetResponderTest extends \PHPUnit_Framework_TestCase
+class AssetResponderTest extends TestCase
 {
     protected $responder;
 
     protected $asset_dir;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'public';
         $responseFactory = new ResponseFactory();
@@ -53,7 +54,7 @@ class AssetResponderTest extends \PHPUnit_Framework_TestCase
 
     public function test__invoke_NotFound()
     {
-        $this->setExpectedException('Hkt\Psr7Asset\Exception\FileNotReadable');
+        $this->expectException('Hkt\Psr7Asset\Exception\FileNotReadable');
         $this->responder->__invoke();
     }
 }

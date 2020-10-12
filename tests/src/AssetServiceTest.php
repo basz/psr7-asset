@@ -1,13 +1,15 @@
 <?php
 namespace Hkt\Psr7Asset;
 
-class AssetServiceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AssetServiceTest extends TestCase
 {
     protected $service;
 
     protected $asset_dir;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'public';
         $locator = new AssetLocator(array(

@@ -2,10 +2,11 @@
 namespace Hkt\Psr7Asset;
 
 use Http\Factory\Diactoros\ResponseFactory;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\ServerRequestFactory;
 
-class AssetActionTest extends \PHPUnit_Framework_TestCase
+class AssetActionTest extends TestCase
 {
     protected $action;
 
@@ -13,7 +14,7 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
 
     protected $responder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->asset_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'public';
 
@@ -32,7 +33,7 @@ class AssetActionTest extends \PHPUnit_Framework_TestCase
         $this->action = new AssetAction($service, $this->responder, $router);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $request = ServerRequestFactory::fromGlobals(
             [
