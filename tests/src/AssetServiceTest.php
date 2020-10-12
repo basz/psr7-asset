@@ -18,7 +18,7 @@ class AssetServiceTest extends TestCase
         $this->service = new AssetService($locator);
     }
 
-    public function testGetAsset()
+    public function testGetAsset(): void
     {
         $asset = $this->service->getAsset('vendor', 'package', 'style.css');
 
@@ -29,14 +29,14 @@ class AssetServiceTest extends TestCase
         $this->assertSame($expect, $asset->type);
     }
 
-    public function testGetAsset_noVendorPackage()
+    public function testGetAsset_noVendorPackage(): void
     {
         $asset = $this->service->getAsset('no-vendor', 'no-package', 'style.css');
         $this->assertNull($asset->path);
         $this->assertEquals('application/octet-stream', $asset->type);
     }
 
-    public function testGetAsset_noType()
+    public function testGetAsset_noType(): void
     {
         $asset = $this->service->getAsset('vendor', 'package', 'fake.txt');
 

@@ -17,7 +17,7 @@ class RouterTest extends TestCase
         $this->router = new Router();
     }
 
-    public function testMatch()
+    public function testMatch(): void
     {
         $request = ServerRequestFactory::fromGlobals(
             [
@@ -38,7 +38,7 @@ class RouterTest extends TestCase
         $this->assertEquals($expect, $route);
     }
 
-    public function testMatchReturnFalse()
+    public function testMatchReturnFalse(): void
     {
         $request = ServerRequestFactory::fromGlobals(
             [

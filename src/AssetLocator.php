@@ -44,7 +44,7 @@ class AssetLocator implements IteratorAggregate
      * @return null
      *
      */
-    public function set($path, $location)
+    public function set($path, $location): void
     {
         $this->map[$path] = $location;
     }
@@ -58,7 +58,7 @@ class AssetLocator implements IteratorAggregate
      * @return bool
      *
      */
-    public function has($path)
+    public function has($path): bool
     {
         return isset($this->map[$path]);
     }
@@ -74,7 +74,7 @@ class AssetLocator implements IteratorAggregate
      * @return string
      *
      */
-    public function get($path)
+    public function get($path): string
     {
         if (! $this->has($path)) {
             throw new Exception\PathNotFound($path);
@@ -90,7 +90,7 @@ class AssetLocator implements IteratorAggregate
      * @return ArrayIterator
      *
      */
-    public function getIterator()
+    public function getIterator(): iterable
     {
         return new ArrayIterator($this->map);
     }

@@ -49,7 +49,7 @@ class AssetResponder
      * @return null
      *
      */
-    public function setData($data)
+    public function setData($data): void
     {
         $this->data = (object) $data;
     }
@@ -61,7 +61,7 @@ class AssetResponder
      * @return object
      *
      */
-    public function getData()
+    public function getData(): object
     {
         return $this->data;
     }
@@ -75,7 +75,7 @@ class AssetResponder
      * @return ResponseInterface $response
      *
      */
-    public function __invoke()
+    public function __invoke(): ResponseInterface
     {
         if ($this->isValidAsset()) {
             return $this->ok();
@@ -89,7 +89,7 @@ class AssetResponder
     *
     * @return bool
     */
-    protected function isValidAsset()
+    protected function isValidAsset(): bool
     {
        return isset($this->data->asset->path)
            && is_file($this->data->asset->path)
@@ -101,7 +101,7 @@ class AssetResponder
      *
      * @return ResponseInterface
      */
-    protected function ok()
+    protected function ok(): ResponseInterface
     {
         $path = $this->data->asset->path;
         $callable = function () use ($path) {

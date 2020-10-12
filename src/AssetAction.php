@@ -2,6 +2,7 @@
 
 namespace Hkt\Psr7Asset;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Webimpress\HttpMiddlewareCompatibility\HandlerInterface;
 use Webimpress\HttpMiddlewareCompatibility\MiddlewareInterface;
@@ -71,7 +72,7 @@ class AssetAction implements MiddlewareInterface
      * @return ResponseInterface
      *
      */
-    public function process(ServerRequestInterface $request, HandlerInterface $handler)
+    public function process(ServerRequestInterface $request, HandlerInterface $handler): ResponseInterface
     {
         $route = $this->router->match($request);
 

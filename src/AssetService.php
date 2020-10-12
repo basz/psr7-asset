@@ -64,7 +64,7 @@ class AssetService
      * asset) and $type (the media type of the asset).
      *
      */
-    public function getAsset($vendor, $package, $file)
+    public function getAsset($vendor, $package, $file): object
     {
         $asset = (object) array(
             'path' => null,
@@ -85,7 +85,7 @@ class AssetService
      *
      * @param string $file The asset file within within the vendor package.
      *
-     * @return string
+     * @return false|string
      *
      */
     protected function getPath($vendor, $package, $file)
@@ -113,7 +113,7 @@ class AssetService
      * @return string
      *
      */
-    protected function getType($path)
+    protected function getType($path): string
     {
         $ext = strrchr($path, '.');
         if (isset($this->types[$ext])) {

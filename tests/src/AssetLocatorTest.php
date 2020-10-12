@@ -15,7 +15,7 @@ class AssetLocatorTest extends TestCase
         ));
     }
 
-    public function testSetHasAndGet()
+    public function testSetHasAndGet(): void
     {
         $this->locator->set('hello', '/asset/hello.css');
         $this->assertTrue($this->locator->has('hello'));
@@ -23,13 +23,13 @@ class AssetLocatorTest extends TestCase
         $this->assertSame($this->asset_dir, $this->locator->get('vendor/package'));
     }
 
-    public function testSetCanReplaceLocation()
+    public function testSetCanReplaceLocation(): void
     {
         $this->locator->set('vendor/package', '/another/vendor/hello.css');
         $this->assertSame('/another/vendor/hello.css', $this->locator->get('vendor/package'));
     }
 
-    public function testGetThrowsException()
+    public function testGetThrowsException(): void
     {
         $this->expectException('Hkt\Psr7Asset\Exception\PathNotFound');
         $this->locator->get('another/vendor');

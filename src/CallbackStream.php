@@ -39,7 +39,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getContents();
     }
@@ -47,7 +47,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function close()
+    public function close(): void
     {
         $this->callback = null;
     }
@@ -55,7 +55,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function detach()
+    public function detach(): callable
     {
         $callback = $this->callback;
         $this->callback = null;
@@ -68,7 +68,7 @@ class CallbackStream implements StreamInterface
      * @param callable $callback
      * @throws InvalidArgumentException for callable callback
      */
-    public function attach(callable $callback)
+    public function attach(callable $callback): void
     {
         $this->callback = $callback;
     }
@@ -83,7 +83,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function tell()
+    public function tell(): int
     {
         throw new RuntimeException('Callback streams cannot tell position');
     }
@@ -91,7 +91,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function eof()
+    public function eof(): bool
     {
         return empty($this->callback);
     }
@@ -99,7 +99,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return false;
     }
@@ -107,7 +107,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         throw new RuntimeException('Callback streams cannot seek position');
     }
@@ -115,7 +115,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         throw new RuntimeException('Callback streams cannot rewind position');
     }
@@ -123,7 +123,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function isWritable()
+    public function isWritable(): bool
     {
         return false;
     }
@@ -131,7 +131,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function write($string)
+    public function write($string): int
     {
         throw new RuntimeException('Callback streams cannot write');
     }
@@ -139,7 +139,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function isReadable()
+    public function isReadable(): bool
     {
         return false;
     }
@@ -155,7 +155,7 @@ class CallbackStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function getContents()
+    public function getContents(): string
     {
         $callback = $this->detach();
         return $callback ? $callback() : '';

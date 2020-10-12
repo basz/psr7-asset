@@ -6,7 +6,7 @@ use Aura\Di\ContainerConfigInterface;
 
 class AssetConfig implements ContainerConfigInterface
 {
-    public function define(Container $di)
+    public function define(Container $di): void
     {
         $di->params['Hkt\Psr7Asset\AssetService']['locator'] = $di->lazyGet('Hkt\Psr7Asset\AssetLocator');
 
@@ -22,7 +22,7 @@ class AssetConfig implements ContainerConfigInterface
         $di->set('Hkt\Psr7Asset\AssetAction', $di->lazyNew('Hkt\Psr7Asset\AssetAction'));
     }
 
-    public function modify(Container $di)
+    public function modify(Container $di): void
     {
     }
 }

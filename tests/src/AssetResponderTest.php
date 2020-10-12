@@ -19,7 +19,7 @@ class AssetResponderTest extends TestCase
         $this->responder = new AssetResponder($responseFactory);
     }
 
-    public function test__invoke_Ok()
+    public function test__invoke_Ok(): void
     {
         $path = $this->asset_dir. DIRECTORY_SEPARATOR . 'style.css';
         $type = 'text/css';
@@ -52,7 +52,7 @@ class AssetResponderTest extends TestCase
         $this->assertSame($expect, $actual);
     }
 
-    public function test__invoke_NotFound()
+    public function test__invoke_NotFound(): void
     {
         $this->expectException('Hkt\Psr7Asset\Exception\FileNotReadable');
         $this->responder->__invoke();
