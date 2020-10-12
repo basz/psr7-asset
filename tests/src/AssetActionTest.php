@@ -1,10 +1,10 @@
 <?php
 namespace Hkt\Psr7Asset;
 
-use Http\Factory\Diactoros\ResponseFactory;
+use Laminas\Diactoros\ResponseFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\ServerRequestFactory;
 
 class AssetActionTest extends TestCase
 {
